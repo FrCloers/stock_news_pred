@@ -57,13 +57,10 @@ pypi:
 # ----------------------------------
 #      UPLOAD PACKAGE TO PYPI
 # ----------------------------------
-# project id - replace with your GCP project id
 PROJECT_ID=stock-news-pred
 
-# bucket name - replace with your GCP bucket name
 BUCKET_NAME=stock-news-pred-bucket
 
-# choose your region from https://cloud.google.com/storage/docs/locations#available_locations
 REGION=europe-west1
 
 set_project:
