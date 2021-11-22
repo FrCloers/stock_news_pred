@@ -15,3 +15,5 @@ setup(name='stock_news_pred',
       include_package_data=True,
       scripts=['scripts/stock_news_pred-run'],
       zip_safe=False)
+
+print('doru-test')
