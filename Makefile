@@ -53,3 +53,18 @@ pypi_test:
 
 pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
+
+# ----------------------------------
+#      UPLOAD PACKAGE TO PYPI
+# ----------------------------------
+PROJECT_ID=stock-news-pred
+
+BUCKET_NAME=stock-news-pred-bucket
+
+REGION=europe-west1
+
+set_project:
+	@gcloud config set project ${PROJECT_ID}
+
+create_bucket:
+	@gsutil mb -l ${REGION} -p ${PROJECT_ID} gs://${BUCKET_NAME}
