@@ -6,7 +6,7 @@ def get_stock_data():
        the stocksapi table in the database"""
     pass
 
-def upload_stock_prediction():
+def upload_LSTM_prediction():
     """Function to upload the LSTM prediction\
         in the database\
         in predictionmodel table\
