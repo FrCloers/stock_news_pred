@@ -1,15 +1,21 @@
 import pandas as pd
 import pymysql
+import os
 from utils import simple_time_tracker
+from dotenv import dotenv_values, load_dotenv
+
+
+#load environment variable
+load_dotenv()
 
 def connect_to_db():
     """Function to make the connection with\
     the database and return the cursor"""
     connection = pymysql.connect(
-        host='34.159.115.175',
-        user='root',
-        password='batch-735-berlin',
-        db='db-stock-news-pred'
+        host=os.environ.get('DB_HOST'), 
+        user=os.environ.get('DB_USER'),
+        password=os.environ.get('DB_PASSWORD'),
+        db=os.environ.get('DB_NAME')
     )
     return connection.cursor()
 
@@ -24,9 +30,8 @@ def get_news_data():
     cursor.execute(sql)
 
     # Fetch all the records and use a for loop to print them one line at a time
-    result = cursor.fetchall()
-    for i in result:
-        print(i)
+    df = pd.DataFrame(cursor.fetchall())
+    return df
 
 def upload_news_sentiment():
     """Function to upload the sentiment news prediction \
@@ -37,4 +42,5 @@ def upload_news_sentiment():
 
 if __name__ == "__main__":
     print('test')
-    get_news_data()
+    df = get_news_data()
+    print(df.head(5))
