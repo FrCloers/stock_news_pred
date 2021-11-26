@@ -1,5 +1,5 @@
 #EXEMPLE !!!
-FROM python:3.8.6-buster
+FROM python:3.8.12-buster
 
 COPY api /api
 COPY TaxiFareModel /TaxiFareModel
