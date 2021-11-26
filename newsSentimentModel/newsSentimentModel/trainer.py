@@ -1,11 +1,11 @@
 """Here we code our notebook process"""
-import news_api.data
+import newsSentimentModel
 
 
-df = news_api.data.get_news_data()
+df = newsSentimentModel.data.get_news_data()
 
 #process notebook
 
 
 #updating the csv_news_sentiment
-news_api.data.upload_csv_sentiment()
+newsSentimentModel.data.upload_csv_sentiment()
