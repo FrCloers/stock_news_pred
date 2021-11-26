@@ -55,7 +55,7 @@ pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
 
 # ----------------------------------
-#      UPLOAD PACKAGE TO PYPI
+#      Bucket setup
 # ----------------------------------
 PROJECT_ID=stock-news-pred
 

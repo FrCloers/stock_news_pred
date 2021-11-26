@@ -1,0 +1,11 @@
+# utilities
+time
+numpy
+
+# data science
+pandas
+
+#connection with the database
+pymysql
+dotenv
+os
