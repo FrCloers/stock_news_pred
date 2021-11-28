@@ -29,7 +29,6 @@ def get_stocksprice_data():
     cursor = connection.cursor()
 
     # Create a new query that selects the entire contents of 'ticker'
-
     sql = "SELECT ticker, `date`, stock_price FROM stocksprice"
     cursor.execute(sql)
     return pd.DataFrame(cursor.fetchall(), columns=['ticker', 'date', 'stock_price'])
