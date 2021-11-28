@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import pymysql
 import os
-from utils import simple_time_tracker
+from stockLstmModel.utils import simple_time_tracker
 from dotenv import load_dotenv
 
 
@@ -25,7 +25,8 @@ def get_stocksprice_data():
     """Function to get the data from\
        the stocksapi table in the database"""
     #connection with the db
-    cursor = connect_to_db()
+    connection = connect_to_db()
+    cursor = connection.cursor()
 
     # Create a new query that selects the entire contents of 'ticker'
 
