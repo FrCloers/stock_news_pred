@@ -2,7 +2,7 @@ import pandas as pd
 import pymysql
 import numpy as np
 import os
-from utils import simple_time_tracker
+from .utils import simple_time_tracker
 from dotenv import load_dotenv
 
 
@@ -21,17 +21,14 @@ def connect_to_db():
     return connection
 
 @simple_time_tracker
-def get_news_data():
+def get_news_data(cursor):
     """Function to get the data from\
        the newsapi table in the database"""
-    
-    #connection with the db
-    cursor = connect_to_db()
 
     # Create a new query that selects the entire contents of 'ticker'
-    sql = "SELECT id, ticker, `date`, title, content FROM news"
+    sql = "SELECT ticker, `date`, title, content FROM news"
     cursor.execute(sql)
-    return pd.DataFrame(cursor.fetchall(), columns=['id', 'ticker', 'date', 'title', 'content'])
+    return pd.DataFrame(cursor.fetchall(), columns=[ 'ticker', 'date', 'title', 'content'])
 
 @simple_time_tracker
 def upload_news_sentiment(df):
@@ -71,8 +68,8 @@ def upload_news_sentiment(df):
 
 if __name__ == "__main__":
     print('test')
-    #df = get_news_data()
-    #print(df.head(5))
+    df = get_news_data()
+    print(df.head(5))
 
     #test upload_news_sentiment 
-    print(upload_news_sentiment("2012-01-01", "GOOGL", "good sentiment22"))
+    #print(upload_news_sentiment("2012-01-01", "GOOGL", "good sentiment22"))

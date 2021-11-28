@@ -12,8 +12,5 @@ setup(name='stock_news_pred',
       install_requires=requirements,
       test_suite='tests',
       # include_package_data: to install data from MANIFEST.in
-      include_package_data=True,
-      scripts=['scripts/stock_news_pred-run'],
-      zip_safe=False)
-
-print('doru-test')
+      include_package_data=True
+      )
