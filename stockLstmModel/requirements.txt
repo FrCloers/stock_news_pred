@@ -1,0 +1,16 @@
+# packaging
+pip>=9
+setuptools>=26
+twine
+wheel>=0.29
+
+# utilities
+numpy
+
+# data science
+pandas
+
+#connection with the database
+pymysql
+mysql-connector-python
+python-dotenv
