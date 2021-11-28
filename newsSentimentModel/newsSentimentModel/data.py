@@ -1,5 +1,6 @@
 import pandas as pd
 import pymysql
+import numpy as np
 import os
 from utils import simple_time_tracker
 from dotenv import load_dotenv
@@ -33,7 +34,7 @@ def get_news_data():
     return pd.DataFrame(cursor.fetchall(), columns=['id', 'ticker', 'date', 'title', 'content'])
 
 @simple_time_tracker
-def upload_news_sentiment(date, ticker, sentiment):
+def upload_news_sentiment(df):
     """Function to upload the sentiment news prediction \
         in the database\
         in predictionmodel table\
@@ -42,25 +43,31 @@ def upload_news_sentiment(date, ticker, sentiment):
     connection = connect_to_db()
     cursor = connection.cursor()
 
-    try:
-        #If the prediction does not yet exist, it is inserted into the database,
-        #otherwise it is updated
-        sql = """INSERT INTO prediction (news_api_sentiment, `date`, ticker) \
-                 VALUES (%s, %s, %s)"""
-        #Values you want to insert
-        values = (sentiment, date, ticker)
-        cursor.execute(sql, values)
-        connection.commit()
+    #transform the DataFrame in a list of list
+    news_list = list(df[['news_sentiment','date', 'ticker']].values)
+    news_list = np.array(news_list)
+    news_list = news_list.tolist()
 
-    except pymysql.Error as err:
-        if err.args[0] == 1062:
-            print('Duplicate entry, updating the values')
-            #SQL query
-            sql = """UPDATE prediction SET news_api_sentiment=%s WHERE `date`=%s AND ticker=%s"""
+    for news_sentiment, date, ticker in news_list:
+        try:
+            #If the prediction does not yet exist, it is inserted into the database,
+            #otherwise it is updated
+            sql = """INSERT INTO prediction (news_api_sentiment, `date`, ticker) \
+                    VALUES (%s, %s, %s)"""
             #Values you want to insert
-            values = (sentiment, date, ticker)
+            values = (news_sentiment, date, ticker)
             cursor.execute(sql, values)
             connection.commit()
+
+        except pymysql.Error as err:
+            if err.args[0] == 1062:
+                print('Duplicate entry, updating the values')
+                #SQL query
+                sql = """UPDATE prediction SET news_api_sentiment=%s WHERE `date`=%s AND ticker=%s"""
+                #Values you want to insert
+                values = (news_sentiment, date, ticker)
+                cursor.execute(sql, values)
+                connection.commit()
 
 if __name__ == "__main__":
     print('test')
