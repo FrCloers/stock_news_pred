@@ -15,7 +15,11 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-@app.get("/")
+@app.get('/')
+def index():
+    return {'stock predcti with sentiment analysis'}
+
+@app.get("/get_stocksprice_data")
 def index():
     df = stockLstmModel.data.get_stocksprice_data()
     return df.head(5)
