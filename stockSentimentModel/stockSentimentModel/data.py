@@ -17,7 +17,7 @@ def connect_to_db():
         password=os.environ.get('DB_PASSWORD'),
         db=os.environ.get('DB_NAME')
     )
-    return connection.cursor()
+    return connection
 
 
 def get_stock_data():
