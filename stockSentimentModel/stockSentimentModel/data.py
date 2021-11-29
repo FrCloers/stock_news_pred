@@ -1,7 +1,7 @@
 import pandas as pd
 import pymysql
 import os
-from utils import simple_time_tracker
+from .utils import simple_time_tracker
 from dotenv import load_dotenv
 
 
@@ -20,7 +20,7 @@ def connect_to_db():
     return connection
 
 
-def get_stock_data():
+def get_stocksentiment_data():
     """Function to get the data from\
        the predictionmodel table in the database"""
     pass

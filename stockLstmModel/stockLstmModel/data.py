@@ -2,7 +2,9 @@ import pandas as pd
 import numpy as np
 import pymysql
 import os
-from stockLstmModel.utils import simple_time_tracker
+
+from pymysql import cursors
+from .utils import simple_time_tracker
 from dotenv import load_dotenv
 
 
@@ -21,17 +23,17 @@ def connect_to_db():
     return connection
 
 @simple_time_tracker
-def get_stocksprice_data():
+def get_stocksprice_data(cursor):
     """Function to get the data from\
        the stocksapi table in the database"""
-    #connection with the db
-    connection = connect_to_db()
-    cursor = connection.cursor()
-
     # Create a new query that selects the entire contents of 'ticker'
     sql = "SELECT ticker, `date`, stock_price FROM stocksprice"
     cursor.execute(sql)
     return pd.DataFrame(cursor.fetchall(), columns=['ticker', 'date', 'stock_price'])
+
+def data_for_prediction(date, ticker):
+    pass
+
 
 @simple_time_tracker
 def upload_LSTM_prediction(df):
@@ -42,7 +44,7 @@ def upload_LSTM_prediction(df):
     #connect to the dB
     connection = connect_to_db()
     cursor = connection.cursor()
-
+    
     #transform the DataFrame in a list of list
     stock_list = list(df[['stock_api_pred','date', 'ticker']].values)
     stock_list = np.array(stock_list)
