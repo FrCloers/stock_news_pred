@@ -1,5 +1,5 @@
 from datetime import date
-import pandas
+import cufflinks as cf
 import streamlit as st
 import requests
 import mysql.connector
@@ -28,28 +28,29 @@ def fetch(session, url):
     except Exception:
         return {}
 
-def choice_parameter():
-    st.title("Choose a date")
-    session = requests.Session()
-    rows = pd.DataFrame(run_query("""SELECT * from ticker;"""))
-    with st.form("my_form"):
-        col1, col2 = st.columns(2)
-        date = st.date_input("date", key="date")
-        ticker = st.selectbox("ticker", rows)
-        value = (date, ticker)
-        submitted =  st.form_submit_button("Submit")
+st.set_page_config(layout="wide")
+st.title("Predict stocks prices with sentimental analysis")
+conn = init_connection()
 
-        if submitted:
-            st.write("Result")
-            news = pd.DataFrame(run_query("""SELECT title, content FROM news WHERE `date` = %s AND ticker = %s""", value), 
-                                columns=['title', 'content'])
-            st.text(news)
+#sidebar
+st.sidebar.subheader('query parameters')
+date = st.sidebar.date_input('Date', key="date")
+rows = pd.DataFrame(run_query("""SELECT * from ticker;"""))
+ticker = st.sidebar.selectbox("Ticker", rows)
+value = (date, ticker)
 
+st.text(f"This is the newspaper and the tweets about the {ticker} on {date}")
 
-if __name__ == '__main__':
-    conn = init_connection()
+col1, col2 = st.columns(2)
+with col1:
+    st.header('News')
+    news = pd.DataFrame(run_query("""SELECT title, content FROM news WHERE `date` = %s AND ticker = %s""", value), 
+                    columns=['title', 'content'])
+    st.dataframe(news)
 
-    st.title("Predict stocks prices with sentimental analysis")
-
-
-    choice_parameter()
+with col2:
+    st.header('Tweets')
+    news = pd.DataFrame(run_query("""SELECT tweet FROM tweets WHERE `date` = %s AND ticker = %s""", value), 
+                    columns=['tweet'])
+    st.dataframe(news)
+#parameter_form()
