@@ -63,27 +63,21 @@ with col2:
 with col3:
     st.header('stock prices')
     ## Range selector
-    format = 'YYYY-MM-DD'  # format output
-    start_date = dt.date(year=2010, month=1, day=1) #  I need some range in the past
-    end_date = dt.datetime.today().date()
-    max_days = end_date-start_date
     
-    slider = st.slider('Select date', min_value=start_date, value=end_date, format=format, max_value=end_date)
-    ## Sanity check
-    st.table(pd.DataFrame([[slider - relativedelta(years=1), slider, slider + dt.timedelta(days=10)]],
+    st.table(pd.DataFrame([[date - relativedelta(years=1), date, date + dt.timedelta(days=10)]],
                     columns=['start',
                             'selected',
                             'end'],
                     index=['date']))
 
-    value =(ticker, slider - relativedelta(years=1), slider + dt.timedelta(days=10) )
+    value =(ticker, date - relativedelta(years=1), date + dt.timedelta(days=10) )
     sql="""SELECT date, stock_price \
         FROM stocksprice \
         WHERE ticker = %s AND (`date` BETWEEN %s AND %s)"""
 
     stock = pd.DataFrame(run_query(sql, value), 
                         columns=['date', 'stock_price'])
-
-    st.line_chart(stock['stock_price'])
+    stock = stock.set_index('date')
+    st.line_chart(stock)
     #plot stock price
     st.write(stock)
