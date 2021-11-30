@@ -1,9 +1,8 @@
 from fastapi  import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from stockLstmModel.data import get_stocksprice_data
-from newsSentimentModel.data import connect_to_db, get_news_data
-from tweetSentimentModel.data import get_tweet_data
-from stockSentimentModel.data import get_stocksentiment_data
+from stockLstmModel.stockLstmModel.data import get_stocksprice_data
+from newsSentimentModel.newsSentimentModel.data import connect_to_db, get_news_data
+from tweetSentimentModel.tweetSentimentModel.data import get_tweet_data
 
 
 app = FastAPI()
@@ -24,7 +23,7 @@ def index():
 @app.get("/get_stocksprice_data")
 def stocks_data():
     connnection = connect_to_db()
-    df = get_stocksprice_data(connnection.cursor())
+    df = get_stocksprice_data(connnection.cursor(), 'AMZN')
     return df.head(5)
 
 @app.get("/get_news_data")
