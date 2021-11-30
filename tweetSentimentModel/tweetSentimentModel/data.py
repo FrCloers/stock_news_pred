@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import pymysql
 import os
-from tweetSentimentModel.utils import simple_time_tracker
+from .utils import simple_time_tracker
 from dotenv import load_dotenv
 
 
@@ -21,17 +21,13 @@ def connect_to_db():
     return connection
 
 @simple_time_tracker
-def get_tweet_data():
+def get_tweet_data(cursor):
     """Function to get the data from\
        the tweets table in the database"""
-    #connection with the db
-    connection = connect_to_db()
-    cursor = connection.cursor()
-
     # Create a new query that selects the entire contents of 'ticker'
-    sql = "SELECT id, ticker, `date`, tweet FROM tweets"
+    sql = "SELECT ticker, `date`, tweet FROM tweets"
     cursor.execute(sql)
-    return pd.DataFrame(cursor.fetchall(), columns=['id', 'ticker', 'date', 'tweet'])
+    return pd.DataFrame(cursor.fetchall(), columns=['ticker', 'date', 'tweet'])
 
 @simple_time_tracker
 def upload_tweet_sentiment(df):

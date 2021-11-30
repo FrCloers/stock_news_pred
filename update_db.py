@@ -3,3 +3,6 @@
 
 # Script to update the db from csv file in the bucket
 
+def pipepline_news():
+    pass
+
