@@ -28,9 +28,12 @@ def stocks_data():
 
 @app.get("/get_news_data")
 def news_data():
-    connnection = connect_to_db()
-    df = get_news_data(connnection.cursor())
-    return df.head(5)
+    try:
+        connnection = connect_to_db()
+        df = get_news_data(connnection.cursor())
+        return df.head(5)
+    except:
+        pass
 
 @app.get("/get_tweet_data")
 def tweets_data():

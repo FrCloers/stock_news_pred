@@ -22,7 +22,6 @@ def connect_to_db():
     )
     return connection
 
-@simple_time_tracker
 def get_stocksprice_data(cursor, ticker):
     """Function to get the data from\
        the stocksapi table in the database"""
