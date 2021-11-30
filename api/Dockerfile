@@ -1,7 +1,7 @@
 FROM python:3.8.12-buster
 
 
-COPY ../api/. .
+COPY . .
 COPY ../newsSentimentModel/newsSentimentModel newsSentimentModel
 COPY ../stockLstmModel/stockLstmModel stockLstmModel
 COPY ../tweetSentimentModel/tweetSentimentModel tweetSentimentModel
