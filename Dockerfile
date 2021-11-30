@@ -9,7 +9,7 @@ COPY stockSentimentModel/stockSentimentModel stockSentimentModel
 
 RUN pip install -U pip
 RUN pip install fastapi uvicorn
-RUN cd api && pip install
+RUN cd api && pip install -e .
 
 
 CMD uvicorn fast:app --host 0.0.0.0 --port $PORT
