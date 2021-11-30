@@ -10,15 +10,20 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def connect_to_db():
-    """Function to make the connection with\
-    the database and return the cursor"""
-    connection = pymysql.connect(
-        host=os.environ.get('DB_HOST'), 
-        user=os.environ.get('DB_USER'),
-        password=os.environ.get('DB_PASSWORD'),
-        db=os.environ.get('DB_NAME')
-    )
-    return connection
+    try:
+        """Function to make the connection with\
+        the database and return the cursor"""
+        connection = pymysql.connect(
+            host=os.environ.get('DB_HOST'), 
+            user=os.environ.get('DB_USER'),
+            password=os.environ.get('DB_PASSWORD'),
+            db=os.environ.get('DB_NAME')
+        )
+        return connection
+    except pymysql.err.OperationalError:
+        print('Unable to make a connection to the mysql database. \
+               Please provide your swdata credentials')
+
 
 @simple_time_tracker
 def get_news_data(cursor):
@@ -67,9 +72,7 @@ def upload_news_sentiment(df):
                 connection.commit()
 
 if __name__ == "__main__":
-    print('test')
-    df = get_news_data()
-    print(df.head(5))
+    connect_to_db()
 
     #test upload_news_sentiment 
     #print(upload_news_sentiment("2012-01-01", "GOOGL", "good sentiment22"))
