@@ -4,6 +4,7 @@ import numpy as np
 import os
 from .utils import simple_time_tracker
 from dotenv import load_dotenv
+import sys, traceback
 
 
 #load environment variable
@@ -21,8 +22,9 @@ def connect_to_db():
         )
         return connection
     except pymysql.err.OperationalError:
-        print('Unable to make a connection to the mysql database. \
-               Please provide your swdata credentials')
+        print(traceback.format_exc())
+    # or
+        print(sys.exc_info()[2])
 
 
 @simple_time_tracker
