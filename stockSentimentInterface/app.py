@@ -16,9 +16,7 @@ connection = pool.connect()
 
 @st.cache(ttl=600)
 def run_query(query, values=None):
-    return connection.execute(query, values).fetchall()
-
-
+    return connection.execute(query, values)
 #Perform API
 session = requests.Session()
 def fetch(session, url):
@@ -35,7 +33,7 @@ st.set_page_config(layout="wide")
 st.title("Predict stocks prices with sentimental analysis")
 
 #Select parameters query
-rows = pd.DataFrame(run_query("""SELECT * from ticker;"""))
+rows = pd.DataFrame(run_query("""SELECT * from ticker;""").fetchall())
 ticker = st.selectbox("Ticker", rows)
 date = st.date_input('Date', key='Date')
 value = (date, ticker)
@@ -44,14 +42,14 @@ st.subheader(f"This is the newspaper and the tweets about the {ticker} on {date}
 col1, col2, col3 = st.columns(3)
 with col1:
     st.header('News')
-    news = pd.DataFrame(run_query("""SELECT title, content FROM news WHERE `date` = %s AND ticker = %s""", value), 
-                    columns=['title', 'content'])
+    news = pd.DataFrame(run_query("""SELECT title, content FROM news WHERE `date` = %s AND ticker = %s""", value).fetchall(), 
+                        columns=['title', 'content'])
     st.dataframe(news)
 
 with col2:
     st.header('Tweets')
-    news = pd.DataFrame(run_query("""SELECT tweet FROM tweets WHERE `date` = %s AND ticker = %s""", value), 
-                    columns=['tweet'])
+    news = pd.DataFrame(run_query("""SELECT tweet FROM tweets WHERE `date` = %s AND ticker = %s""", value).fetchall(), 
+                        columns=['tweet'])
     st.dataframe(news)
 
 with col3:
@@ -69,17 +67,9 @@ with col3:
         FROM stocksprice \
         WHERE ticker = %s AND (`date` BETWEEN %s AND %s)"""
 
-    stock = pd.DataFrame(run_query(sql, value), 
+    stock = pd.DataFrame(run_query(sql, value).fetchall(), 
                         columns=['date', 'stock_price'])
     stock = stock.set_index('date')
     st.line_chart(stock)
     #plot stock price
     st.write(stock)
-
-if __name__ == "__main__":
-    dict={
-    'username':os.environ.get('DB_USER'),
-    'password':os.environ.get('DB_PASS'),
-    'database':os.environ.get('DB_NAME')
-    }
-    print (dict)
