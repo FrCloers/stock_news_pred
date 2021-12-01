@@ -4,6 +4,7 @@ import requests
 import pandas as pd
 import numpy as np
 import connect_db
+import os
 
 from dateutil.relativedelta import relativedelta
 
@@ -74,3 +75,11 @@ with col3:
     st.line_chart(stock)
     #plot stock price
     st.write(stock)
+
+if __name__ == "__main__":
+    dict={
+    'username':os.environ.get('DB_USER'),
+    'password':os.environ.get('DB_PASS'),
+    'database':os.environ.get('DB_NAME')
+    }
+    print (dict)
