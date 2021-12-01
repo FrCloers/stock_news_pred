@@ -6,11 +6,13 @@ import numpy as np
 import connect_db
 
 from dateutil.relativedelta import relativedelta
-# Initialize connection.
-# Uses st.cache to only run once.
 
 # Perform query.
 # Uses st.cache to only rerun when the query changes or after 10 min.
+#creation dt connection
+pool = connect_db.init_db_connection()
+connection = pool.connect()
+
 @st.cache(ttl=600)
 def run_query(query, values=None):
     return connection.execute(query, values).fetchall()
@@ -31,12 +33,7 @@ st.set_page_config(layout="wide")
 #title page
 st.title("Predict stocks prices with sentimental analysis")
 
-#creation dt connection
-pool = connect_db.init_db_connection()
-connection = pool.connect()
-
 #Select parameters query
-
 rows = pd.DataFrame(run_query("""SELECT * from ticker;"""))
 ticker = st.selectbox("Ticker", rows)
 date = st.date_input('Date', key='Date')
