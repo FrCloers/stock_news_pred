@@ -33,7 +33,6 @@ def container_connect_bd():
             username=db_user,  # e.g. "my-database-user"
             password=db_pass,  # e.g. "my-database-password"
             host=db_hostname,  # e.g. "127.0.0.1"
-            port=db_port,  # e.g. 3306
             database=db_name,  # e.g. "my-database-name"
         )
     )
