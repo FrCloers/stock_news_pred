@@ -9,8 +9,6 @@ import connect_db
 from dateutil.relativedelta import relativedelta
 # Initialize connection.
 # Uses st.cache to only run once.
-def init_connection():
-    return mysql.connector.connect(**st.secrets["mysql"])
 
 # Perform query.
 # Uses st.cache to only rerun when the query changes or after 10 min.
