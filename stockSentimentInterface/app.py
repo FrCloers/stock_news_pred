@@ -1,7 +1,6 @@
 import datetime as dt
 import streamlit as st
 import requests
-import mysql.connector
 import pandas as pd
 import numpy as np
 import connect_db
