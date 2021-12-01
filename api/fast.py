@@ -23,12 +23,13 @@ app.add_middleware(
 
 @app.get('/')
 def index():
-     return {
-            os.environ.get('DB_HOST'), 
-            os.environ.get('DB_USER'),
-            os.environ.get('DB_PASS'),
-            os.environ.get('DB_NAME')
+     dict_para = {
+            'host':os.environ.get('DB_HOST'), 
+            'user':os.environ.get('DB_USER'),
+            'pass':os.environ.get('DB_PASS'),
+            'name':os.environ.get('DB_NAME')
      }
+     return dict_para
 
 @app.get("/get_stocksprice_data")
 def stocks_data():
