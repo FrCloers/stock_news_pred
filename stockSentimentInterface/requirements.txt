@@ -2,4 +2,5 @@ requests
 streamlit
 cufflinks
 SQLAlchemy
-mysql
+pandas
+python-dotenv
