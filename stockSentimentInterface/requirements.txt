@@ -2,3 +2,4 @@ requests
 streamlit
 cufflinks
 SQLAlchemy
+mysql

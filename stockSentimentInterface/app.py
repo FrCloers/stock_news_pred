@@ -1,10 +1,10 @@
 import datetime as dt
-import cufflinks as cf
 import streamlit as st
 import requests
 import mysql.connector
 import pandas as pd
 import numpy as np
+import connect_db
 
 from dateutil.relativedelta import relativedelta
 # Initialize connection.
@@ -16,9 +16,7 @@ def init_connection():
 # Uses st.cache to only rerun when the query changes or after 10 min.
 @st.cache(ttl=600)
 def run_query(query, values=None):
-    with conn.cursor() as cur:
-        cur.execute(query, values)
-        return cur.fetchall()
+    return connection.execute(query, values).fetchall()
 
 
 #Perform API
@@ -37,7 +35,8 @@ st.set_page_config(layout="wide")
 st.title("Predict stocks prices with sentimental analysis")
 
 #creation dt connection
-conn = init_connection()
+pool = connect_db.init_db_connection()
+connection = pool.connect()
 
 #Select parameters query
 
