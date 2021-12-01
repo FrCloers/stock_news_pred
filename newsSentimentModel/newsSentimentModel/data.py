@@ -2,8 +2,11 @@ import pandas as pd
 import pymysql
 import numpy as np
 import os
+
+from pymysql import connections
 from .utils import simple_time_tracker
 from dotenv import load_dotenv
+import sys, traceback
 
 
 #load environment variable
@@ -13,16 +16,21 @@ def connect_to_db():
     try:
         """Function to make the connection with\
         the database and return the cursor"""
+        cursor = pymysql.cursors.DictCursor
+        
         connection = pymysql.connect(
             host=os.environ.get('DB_HOST'), 
             user=os.environ.get('DB_USER'),
             password=os.environ.get('DB_PASSWORD'),
-            db=os.environ.get('DB_NAME')
+            db=os.environ.get('DB_NAME'),
+            cursorclass=cursor
         )
+        print(connection)
         return connection
     except pymysql.err.OperationalError:
-        print('Unable to make a connection to the mysql database. \
-               Please provide your swdata credentials')
+        print(traceback.format_exc())
+    # or
+        print(sys.exc_info()[2])
 
 
 @simple_time_tracker
