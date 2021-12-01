@@ -33,7 +33,7 @@ def index():
 
 @app.get("/get_stocksprice_data")
 def stocks_data():
-    pool = connect_db.container_connect_bd()
+    pool = connect_db.init_db_connection()
     connection = pool.connect()
     sql = "SELECT ticker, `date`, stock_price FROM stocksprice WHERE ticker = %s"
     values = ('AMZN', )
