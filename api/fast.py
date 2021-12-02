@@ -1,9 +1,15 @@
 from fastapi  import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from stockLstmModel.stockLstmModel.data import get_stocksprice_data
-from newsSentimentModel.newsSentimentModel.data import connect_to_db, get_news_data
-from tweetSentimentModel.tweetSentimentModel.data import get_tweet_data
-from stockSentimentModel.stockSentimentModel.data import get_stocksentiment_data
+from stockLstmModel.data import get_stocksprice_data
+from newsSentimentModel.data import connect_to_db, get_news_data
+from tweetSentimentModel.data import get_tweet_data
+import os
+import connect_db
+import pandas as pd
+from dotenv import load_dotenv
+
+#load environment variable
+load_dotenv()
 
 app = FastAPI()
 
@@ -17,19 +23,31 @@ app.add_middleware(
 
 @app.get('/')
 def index():
-    return {'stock predcti with sentiment analysis'}
+     dict_para = {
+            'host':os.environ.get('DB_HOST'), 
+            'user':os.environ.get('DB_USER'),
+            'pass':os.environ.get('DB_PASS'),
+            'name':os.environ.get('DB_NAME')
+     }
+     return dict_para
 
 @app.get("/get_stocksprice_data")
 def stocks_data():
-    connnection = connect_to_db()
-    df = get_stocksprice_data(connnection.cursor())
+    pool = connect_db.init_db_connection()
+    connection = pool.connect()
+    sql = "SELECT ticker, `date`, stock_price FROM stocksprice WHERE ticker = %s"
+    values = ('AMZN', )
+    df=pd.DataFrame(connection.execute(sql, values).fetchall(), columns=['ticker', 'date', 'stock_price'])
     return df.head(5)
 
 @app.get("/get_news_data")
 def news_data():
-    connnection = connect_to_db()
-    df = get_news_data(connnection.cursor())
-    return df.head(5)
+    try:
+        connnection = connect_to_db()
+        df = get_news_data(connnection.cursor())
+        return df.head(5)
+    except:
+        pass
 
 @app.get("/get_tweet_data")
 def tweets_data():

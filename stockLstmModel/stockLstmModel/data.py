@@ -22,13 +22,13 @@ def connect_to_db():
     )
     return connection
 
-@simple_time_tracker
-def get_stocksprice_data(cursor):
+def get_stocksprice_data(cursor, ticker):
     """Function to get the data from\
        the stocksapi table in the database"""
     # Create a new query that selects the entire contents of 'ticker'
-    sql = "SELECT ticker, `date`, stock_price FROM stocksprice"
-    cursor.execute(sql)
+    sql = "SELECT ticker, `date`, stock_price FROM stocksprice WHERE ticker = %s"
+    values = (ticker, )
+    cursor.execute(sql, values)
     return pd.DataFrame(cursor.fetchall(), columns=['ticker', 'date', 'stock_price'])
 
 def data_for_prediction(date, ticker):

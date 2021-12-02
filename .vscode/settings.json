@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
-        "./stockSentimentModel/api"
+        "./stockSentimentModel/api",
+        "./stockSentimentModel"
     ]
 }
