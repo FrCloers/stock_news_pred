@@ -8,3 +8,4 @@ raw_data/
 .env
 .streamlit
 cloud_sql_proxy
+cloudsql/
